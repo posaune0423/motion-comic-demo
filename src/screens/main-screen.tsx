@@ -1,28 +1,51 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StatusBar } from 'expo-status-bar'
-import { Text, View, Button } from 'native-base'
+import { Text, View } from 'native-base'
+import { MotionComicCard } from '../components/motion-comic-card'
 
 type RootStackParamList = {
-  Main: undefined
-  About: undefined
+  Main: any
+  MotionComicDetail: MotionComic
 }
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList>
 }
 
+export type MotionComic = {
+  id: number
+  name: string
+  image: string
+}
+
+const comics: MotionComic[] = [
+  {
+    id: 1,
+    name: 'BLEACH',
+    image: 'https://pbs.twimg.com/media/FdD5he7aUAc2uB_?format=jpg&name=4096x4096'
+  },
+  {
+    id: 2,
+    name: 'NARUTO',
+    image: 'https://news.pierrot.jp/wp-content/uploads/2020/07/NARUTO_MV.jpg'
+  },
+  {
+    id: 3,
+    name: 'Death Note',
+    image:
+      'https://cs1.animestore.docomo.ne.jp/anime_kv/img/20/18/7/20187_1_d2.jpg?1648798207818'
+  }
+]
+
 export default function MainScreen({ navigation }: Props) {
   return (
-    <View
-      flex={1}
-      backgroundColor="#fff"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Text>Main Screen !!</Text>
-      <Button my={3} onPress={() => navigation.navigate('About')}>
-        About
-      </Button>
+    <View flex={1} backgroundColor="#fff" alignItems="center">
+      <Text my={3} fontSize="4xl">
+        Comic List 📕
+      </Text>
+      {comics.map(comic => {
+        return <MotionComicCard comic={comic} key={comic.id} />
+      })}
       <StatusBar style="auto" />
     </View>
   )
