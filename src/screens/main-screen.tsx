@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StatusBar } from 'expo-status-bar'
-import { Text, View, Box } from 'native-base'
+import { Text, View } from 'native-base'
 import { MotionComicCard } from '../components/motion-comic-card'
 
 type RootStackParamList = {
