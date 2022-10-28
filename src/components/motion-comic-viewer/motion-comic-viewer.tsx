@@ -1,6 +1,7 @@
 import { View, Spinner, HStack } from 'native-base'
 import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av'
 import { useRef, useState } from 'react'
+import { useEffect } from 'react'
 
 type Props = {
   videos: string[]
@@ -14,6 +15,15 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
 
   const [statusJa, setStatusJa] = useState<AVPlaybackStatus>()
   const [statusEn, setStatusEn] = useState<AVPlaybackStatus>()
+
+  useEffect(() => {
+    if (statusJa?.isLoaded && statusEn?.isLoaded) {
+      if (!statusJa.isPlaying && !statusEn.isPlaying) {
+        videoJa.current?.playAsync()
+        videoEn.current?.playAsync()
+      }
+    }
+  }, [statusJa, statusEn])
 
   return (
     <View mt={8} maxWidth={'100%'}>
@@ -32,7 +42,6 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
         }}
         resizeMode={ResizeMode.COVER}
         isMuted={lang !== 'ja'}
-        shouldPlay={true}
         source={{
           uri: videos[0]
         }}
@@ -47,7 +56,6 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
         }}
         resizeMode={ResizeMode.COVER}
         isMuted={lang !== 'en'}
-        shouldPlay={true}
         source={{
           uri: videos[1]
         }}
