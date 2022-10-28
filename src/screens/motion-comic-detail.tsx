@@ -38,25 +38,34 @@ export default function MotionComicDetailScreen({ route }: Props) {
         size="xl"
         w={'80%'}
       />
-      <Box maxW="300" my={4}>
-        <Select
-          selectedValue={lang}
-          minWidth="200"
-          accessibilityLabel="Choose Language"
-          placeholder="Choose Language"
-          mt={1}
-          onValueChange={lang => setLang(lang as Lang)}
-        >
-          <Select.Item label="日本語" value="ja" />
-          <Select.Item label="English" value="en" />
-        </Select>
-      </Box>
 
-      <MotionComicViewer
-        comicId={comic.id}
-        lang={lang}
-        changeLang={changeLang}
-      />
+      {comic.id === 1 ? (
+        <View>
+          <Box maxW="300" my={4}>
+            <Select
+              selectedValue={lang}
+              minWidth="200"
+              accessibilityLabel="Choose Language"
+              placeholder="Choose Language"
+              mt={1}
+              onValueChange={lang => setLang(lang as Lang)}
+            >
+              <Select.Item label="日本語" value="ja" />
+              <Select.Item label="English" value="en" />
+            </Select>
+          </Box>
+
+          <MotionComicViewer
+            comicId={comic.id}
+            lang={lang}
+            changeLang={changeLang}
+          />
+        </View>
+      ) : (
+        <Box my={10}>
+          <Text>Coming soon...</Text>
+        </Box>
+      )}
       <StatusBar style="auto" />
     </View>
   )

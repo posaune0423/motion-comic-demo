@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StatusBar } from 'expo-status-bar'
-import { Text, View } from 'native-base'
+import { Text, View, Box } from 'native-base'
 import { MotionComicCard } from '../components/motion-comic-card'
 
 type RootStackParamList = {
@@ -21,8 +21,8 @@ export type MotionComic = {
 const comics: MotionComic[] = [
   {
     id: 1,
-    name: 'BLEACH',
-    image: 'https://pbs.twimg.com/media/FdD5he7aUAc2uB_?format=jpg&name=4096x4096'
+    name: 'シュート！',
+    image: 'https://dengekionline.com/images/Gwb8/o5YZ/B5T9/TGx4/Elked72keoIlcPhYPph4Ea3QRZ3TUuHudW8QuzaiF1bTfM2sucZDvzNiowCiTJ7M68pl0X2b4RuEg0zF_main.jpg'
   },
   {
     id: 2,
@@ -40,12 +40,14 @@ const comics: MotionComic[] = [
 export default function MainScreen({ navigation }: Props) {
   return (
     <View flex={1} backgroundColor="#fff" alignItems="center">
-      <Text my={3} fontSize="4xl">
-        Comic List 📕
+      <Text my={3} fontSize="3xl" fontWeight={'bold'}>
+        Motion Comic List 📕
       </Text>
+
       {comics.map(comic => {
         return <MotionComicCard comic={comic} key={comic.id} />
       })}
+
       <StatusBar style="auto" />
     </View>
   )
