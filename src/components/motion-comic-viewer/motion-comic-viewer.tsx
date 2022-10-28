@@ -1,60 +1,57 @@
-import { View } from 'native-base'
-import { ResizeMode, Video } from 'expo-av'
-import { useRef } from 'react'
+import { View, Spinner, HStack } from 'native-base'
+import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av'
+import { useRef, useState } from 'react'
 
 type Props = {
   videos: string[]
-  lang: 'ja' | 'en' | 'ch'
-  changeLang: (lang: 'ja' | 'en' | 'ch') => void
+  lang: 'ja' | 'en'
+  changeLang: (lang: 'ja' | 'en') => void
 }
 
-export const MotionComicViewerComponent = ({
-  videos,
-  lang,
-  changeLang
-}: Props) => {
-  const video = useRef(null)
+export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
+  const videoJa = useRef<Video>(null)
+  const videoEn = useRef<Video>(null)
+
+  const [statusJa, setStatusJa] = useState<AVPlaybackStatus>()
+  const [statusEn, setStatusEn] = useState<AVPlaybackStatus>()
 
   return (
     <View mt={8} maxWidth={'100%'}>
+      {!statusJa?.isLoaded && !statusEn?.isLoaded ? (
+        <HStack space={8} justifyContent="center" alignItems="center">
+          <Spinner size="lg" />
+        </HStack>
+      ) : undefined}
+
       <Video
-        ref={video}
+        ref={videoJa}
         style={{
           width: 320,
           height: 200,
           display: lang === 'ja' ? 'flex' : 'none'
         }}
         resizeMode={ResizeMode.COVER}
+        isMuted={lang !== 'ja'}
         shouldPlay={true}
         source={{
           uri: videos[0]
         }}
+        onLoad={status => setStatusJa(() => status)}
       />
       <Video
-        ref={video}
+        ref={videoEn}
         style={{
           width: 320,
           height: 200,
           display: lang === 'en' ? 'flex' : 'none'
         }}
         resizeMode={ResizeMode.COVER}
+        isMuted={lang !== 'en'}
         shouldPlay={true}
         source={{
           uri: videos[1]
         }}
-      />
-      <Video
-        ref={video}
-        style={{
-          width: 320,
-          height: 200,
-          display: lang === 'ch' ? 'flex' : 'none'
-        }}
-        resizeMode={ResizeMode.COVER}
-        shouldPlay={true}
-        source={{
-          uri: videos[2]
-        }}
+        onLoad={status => setStatusEn(() => status)}
       />
     </View>
   )

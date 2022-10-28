@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
-import { Image, Text, View, Box, Select, CheckIcon } from 'native-base'
+import { Image, Text, View, Box, Select } from 'native-base'
 import { useState } from 'react'
 import { MotionComicViewer } from '../components/motion-comic-viewer'
 import { MotionComic } from './main-screen'
@@ -14,7 +14,7 @@ type Props = {
   route: RouteProp<RootStackParamList, 'MotionComicDetail'>
 }
 
-type Lang = 'ja' | 'en' | 'ch'
+type Lang = 'ja' | 'en'
 
 export default function MotionComicDetailScreen({ route }: Props) {
   const comic = route.params
@@ -49,7 +49,6 @@ export default function MotionComicDetailScreen({ route }: Props) {
         >
           <Select.Item label="日本語" value="ja" />
           <Select.Item label="English" value="en" />
-          <Select.Item label="Chinese" value="ch" />
         </Select>
       </Box>
 

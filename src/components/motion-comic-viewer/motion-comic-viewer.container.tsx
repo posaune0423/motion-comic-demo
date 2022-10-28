@@ -3,18 +3,15 @@ import { MotionComicViewerComponent } from './motion-comic-viewer'
 
 type Props = {
   comicId: number
-  lang: 'ja' | 'en' | 'ch'
-  changeLang: (lang: 'ja' | 'en' | 'ch') => void
+  lang: 'ja' | 'en'
+  changeLang: (lang: 'ja' | 'en') => void
 }
 
 export const MotionComicViewer = ({ comicId, lang, changeLang }: Props) => {
   const videos = [
-    'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-    'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-    'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
+    'https://github.com/posaune0423/motion-comic-demo/raw/main/assets/videos/1_ja_en.mp4',
+    'https://github.com/posaune0423/motion-comic-demo/raw/main/assets/videos/1_en_en.mp4'
   ]
-
-
 
   return (
     <MotionComicViewerComponent
