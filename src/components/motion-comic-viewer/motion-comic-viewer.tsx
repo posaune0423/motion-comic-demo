@@ -1,4 +1,4 @@
-import { View, Spinner, HStack } from 'native-base'
+import { View, Spinner, HStack, Box } from 'native-base'
 import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av'
 import { useRef, useState } from 'react'
 import { useEffect } from 'react'
@@ -33,34 +33,54 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
         </HStack>
       ) : undefined}
 
-      <Video
-        ref={videoJa}
-        style={{
-          width: 320,
-          height: 200,
-          display: lang === 'ja' ? 'flex' : 'none'
-        }}
-        resizeMode={ResizeMode.COVER}
-        isMuted={lang !== 'ja'}
-        source={{
-          uri: videos[0]
-        }}
-        onLoad={status => setStatusJa(() => status)}
-      />
-      <Video
-        ref={videoEn}
-        style={{
-          width: 320,
-          height: 200,
-          display: lang === 'en' ? 'flex' : 'none'
-        }}
-        resizeMode={ResizeMode.COVER}
-        isMuted={lang !== 'en'}
-        source={{
-          uri: videos[1]
-        }}
-        onLoad={status => setStatusEn(() => status)}
-      />
+      {videos.length > 1 ? (
+        <Box>
+          <Video
+            ref={videoJa}
+            style={{
+              width: 320,
+              height: 200,
+              display: lang === 'ja' ? 'flex' : 'none'
+            }}
+            resizeMode={ResizeMode.COVER}
+            isMuted={lang !== 'ja'}
+            source={{
+              uri: videos[0]
+            }}
+            onLoad={status => setStatusJa(() => status)}
+          />
+          <Video
+            ref={videoEn}
+            style={{
+              width: 320,
+              height: 200,
+              display: lang === 'en' ? 'flex' : 'none'
+            }}
+            resizeMode={ResizeMode.COVER}
+            isMuted={lang !== 'en'}
+            source={{
+              uri: videos[1]
+            }}
+            onLoad={status => setStatusEn(() => status)}
+          />
+        </Box>
+      ) : (
+        <Box>
+          <Video
+            ref={videoJa}
+            style={{
+              width: 320,
+              height: 200,
+              display: 'flex'
+            }}
+            resizeMode={ResizeMode.COVER}
+            source={{
+              uri: videos[0]
+            }}
+            onLoad={status => setStatusJa(() => status)}
+          />
+        </Box>
+      )}
     </View>
   )
 }

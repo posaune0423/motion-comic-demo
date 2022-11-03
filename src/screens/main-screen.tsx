@@ -2,27 +2,18 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StatusBar } from 'expo-status-bar'
 import { Text, View } from 'native-base'
 import { MotionComicCard } from '../components/motion-comic-card'
-
-type RootStackParamList = {
-  Main: any
-  MotionComicDetail: MotionComic
-}
+import { MotionComic, RootStackParamList } from '../types'
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList>
-}
-
-export type MotionComic = {
-  id: number
-  name: string
-  image: string
 }
 
 const comics: MotionComic[] = [
   {
     id: 1,
     name: 'シュート！',
-    image: 'https://dengekionline.com/images/Gwb8/o5YZ/B5T9/TGx4/Elked72keoIlcPhYPph4Ea3QRZ3TUuHudW8QuzaiF1bTfM2sucZDvzNiowCiTJ7M68pl0X2b4RuEg0zF_main.jpg'
+    image:
+      'https://dengekionline.com/images/Gwb8/o5YZ/B5T9/TGx4/Elked72keoIlcPhYPph4Ea3QRZ3TUuHudW8QuzaiF1bTfM2sucZDvzNiowCiTJ7M68pl0X2b4RuEg0zF_main.jpg'
   },
   {
     id: 2,
