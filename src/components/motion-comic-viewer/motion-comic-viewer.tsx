@@ -12,6 +12,8 @@ type Props = {
 export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
   const videoJa = useRef<Video>(null)
   const videoEn = useRef<Video>(null)
+  const video2 = useRef<Video>(null)
+  console.log(videos.length)
 
   const [statusJa, setStatusJa] = useState<AVPlaybackStatus>()
   const [statusEn, setStatusEn] = useState<AVPlaybackStatus>()
@@ -67,7 +69,7 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
       ) : (
         <Box>
           <Video
-            ref={videoJa}
+            ref={video2}
             style={{
               width: 320,
               height: 200,
@@ -77,6 +79,7 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
             source={{
               uri: videos[0]
             }}
+            shouldPlay={true}
             onLoad={status => setStatusJa(() => status)}
           />
         </Box>
