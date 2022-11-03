@@ -19,7 +19,7 @@ export default function MotionComicDetailScreen() {
   return (
     <View flex={1} backgroundColor="#fff" alignItems="center">
       <Text my={4} fontSize={'lg'}>
-        {comic.name} 題{episode}話
+        {comic.name} 第{episode}話
       </Text>
 
       {comic.id === 1 ? (
