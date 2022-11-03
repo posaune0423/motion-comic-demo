@@ -1,3 +1,5 @@
+import { AVPlaybackStatus, Video } from 'expo-av'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Lang } from '../../types'
 import { MotionComicViewerComponent } from './motion-comic-viewer'
 
@@ -16,7 +18,7 @@ export const MotionComicViewer = ({
   lang,
   inFullScreen,
   handleFullScreen,
-  handleLangChange,
+  handleLangChange
 }: Props) => {
   const videos = [
     [
@@ -28,6 +30,30 @@ export const MotionComicViewer = ({
     ]
   ]
 
+  const videoJa = useRef<Video>()
+  const videoEn = useRef<Video>()
+  const video2 = useRef<Video>()
+
+  const [statusJa, setStatusJa] = useState<AVPlaybackStatus>()
+  const [statusEn, setStatusEn] = useState<AVPlaybackStatus>()
+
+  const changeStatusJa = useCallback((status: AVPlaybackStatus) => {
+    setStatusJa(status)
+  }, [])
+
+  const changeStatusEn = useCallback((status: AVPlaybackStatus) => {
+    setStatusEn(status)
+  }, [])
+
+  useEffect(() => {
+    if (statusJa?.isLoaded && statusEn?.isLoaded) {
+      if (!statusJa.isPlaying && !statusEn.isPlaying) {
+        videoJa.current?.playAsync()
+        videoEn.current?.playAsync()
+      }
+    }
+  }, [statusJa, statusEn])
+
   return (
     <MotionComicViewerComponent
       videos={videos[episode - 1]}
@@ -35,6 +61,11 @@ export const MotionComicViewer = ({
       inFullScreen={inFullScreen}
       handleFullScreen={handleFullScreen}
       handleLangChange={handleLangChange}
+      videoJa={videoJa}
+      videoEn={videoEn}
+      video2={video2}
+      changeStatusEn={changeStatusEn}
+      changeStatusJa={changeStatusJa}
     />
   )
 }

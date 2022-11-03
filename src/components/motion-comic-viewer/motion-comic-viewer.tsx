@@ -1,53 +1,47 @@
 import * as ScreenOrientation from 'expo-screen-orientation'
-import { Box, Select } from 'native-base'
+import { Box } from 'native-base'
 import { Dimensions } from 'react-native'
 import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av'
-import { memo, useRef, useState } from 'react'
-import { useEffect } from 'react'
+import { memo, RefObject } from 'react'
 import VideoPlayer from 'expo-video-player'
 import { setStatusBarHidden } from 'expo-status-bar'
 import { Lang } from '../../types'
 import { LangSelector } from '../langSelector'
+import { MutableRefObject } from 'react'
 
 type Props = {
   videos: string[]
+  videoJa: MutableRefObject<Video | undefined>
+  videoEn: MutableRefObject<Video | undefined>
+  video2: MutableRefObject<Video | undefined>
   lang: Lang
   inFullScreen: boolean
   handleFullScreen: () => void
   handleLangChange: (lang: Lang) => void
+  changeStatusJa: (status: AVPlaybackStatus) => void
+  changeStatusEn: (status: AVPlaybackStatus) => void
 }
 
 export const MotionComicViewerComponent = memo(
   ({
     videos,
+    videoEn,
+    videoJa,
+    video2,
     lang,
     inFullScreen,
     handleLangChange,
-    handleFullScreen
+    handleFullScreen,
+    changeStatusJa,
+    changeStatusEn
   }: Props) => {
-    const videoJa = useRef<Video>(null)
-    const videoEn = useRef<Video>(null)
-    const video2 = useRef<Video>(null)
-
-    const [statusJa, setStatusJa] = useState<AVPlaybackStatus>()
-    const [statusEn, setStatusEn] = useState<AVPlaybackStatus>()
-
-    useEffect(() => {
-      if (statusJa?.isLoaded && statusEn?.isLoaded) {
-        if (!statusJa.isPlaying && !statusEn.isPlaying) {
-          videoJa.current?.playAsync()
-          videoEn.current?.playAsync()
-        }
-      }
-    }, [statusJa, statusEn])
-
     return (
       <>
         {videos.length > 1 ? (
           <>
             <Box display={lang === 'ja' ? 'block' : 'none'}>
               <VideoPlayer
-                playbackCallback={status => setStatusJa(status)}
+                playbackCallback={status => changeStatusJa(status)}
                 videoProps={{
                   shouldPlay: false,
                   resizeMode: ResizeMode.COVER,
@@ -83,7 +77,7 @@ export const MotionComicViewerComponent = memo(
                     : 200,
                   width: inFullScreen
                     ? Dimensions.get('window').width - 40
-                    : 320
+                    : Dimensions.get('window').width
                 }}
                 header={
                   <LangSelector
@@ -95,7 +89,7 @@ export const MotionComicViewerComponent = memo(
             </Box>
             <Box display={lang === 'en' ? 'block' : 'none'}>
               <VideoPlayer
-                playbackCallback={status => setStatusEn(status)}
+                playbackCallback={status => changeStatusEn(status)}
                 videoProps={{
                   shouldPlay: false,
                   resizeMode: ResizeMode.COVER,
@@ -131,7 +125,7 @@ export const MotionComicViewerComponent = memo(
                     : 200,
                   width: inFullScreen
                     ? Dimensions.get('window').width - 40
-                    : 320
+                    : Dimensions.get('window').width
                 }}
                 header={
                   <LangSelector
@@ -177,7 +171,7 @@ export const MotionComicViewerComponent = memo(
                 height: inFullScreen
                   ? Dimensions.get('window').width - 50
                   : 200,
-                width: inFullScreen ? Dimensions.get('window').height - 40 : 320
+                width: inFullScreen ? Dimensions.get('window').height - 40 : Dimensions.get('window').width
               }}
             />
           </Box>
