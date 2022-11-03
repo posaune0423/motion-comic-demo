@@ -2,7 +2,7 @@ import * as ScreenOrientation from 'expo-screen-orientation'
 import { RouteProp, useRoute } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { View, Text } from 'native-base'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { MotionComicViewer } from '../components/motion-comic-viewer'
 import { Lang, RootStackParamList } from '../types'
 
@@ -11,6 +11,14 @@ export default function MotionComicDetailScreen() {
   const { comic, episode } = route.params
   const [lang, setLang] = useState<Lang>('ja')
   const [inFullScreen, setInFullScreen] = useState(false)
+
+  const handleFullScreen = useCallback(() => {
+    setInFullScreen(prev => !prev)
+  }, [])
+
+  const handleLangChange = useCallback((lang: Lang) => {
+    setLang(lang)
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -31,8 +39,8 @@ export default function MotionComicDetailScreen() {
         episode={episode}
         lang={lang}
         inFullScreen={inFullScreen}
-        setInFullScreen={setInFullScreen}
-        setLang={setLang}
+        handleFullScreen={handleFullScreen}
+        handleLangChange={handleLangChange}
       />
 
       <StatusBar style="auto" />

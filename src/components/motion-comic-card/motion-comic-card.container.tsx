@@ -1,8 +1,7 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useNavigation } from '@react-navigation/native'
 import { MotionComicCardComponent } from './motion-comic-card'
-import { MotionComic } from '../../screens/main-screen'
-import { RootStackParamList } from '../../types'
+import { RootStackParamList, MotionComic } from '../../types'
 
 type Props = {
   comic: MotionComic

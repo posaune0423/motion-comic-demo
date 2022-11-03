@@ -6,9 +6,8 @@ type Props = {
   episode: number
   lang: Lang
   inFullScreen: boolean
-  setInFullScreen: (inFullScreen: boolean) => void
-
-  setLang: (lang: Lang) => void
+  handleFullScreen: () => void
+  handleLangChange: (lang: Lang) => void
 }
 
 export const MotionComicViewer = ({
@@ -16,8 +15,8 @@ export const MotionComicViewer = ({
   episode,
   lang,
   inFullScreen,
-  setInFullScreen,
-  setLang,
+  handleFullScreen,
+  handleLangChange,
 }: Props) => {
   const videos = [
     [
@@ -34,8 +33,8 @@ export const MotionComicViewer = ({
       videos={videos[episode - 1]}
       lang={lang}
       inFullScreen={inFullScreen}
-      setInFullScreen={setInFullScreen}
-      setLang={setLang}
+      handleFullScreen={handleFullScreen}
+      handleLangChange={handleLangChange}
     />
   )
 }
