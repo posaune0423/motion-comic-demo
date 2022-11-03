@@ -1,18 +1,23 @@
-import { useState } from 'react'
+import { Lang } from '../../types'
 import { MotionComicViewerComponent } from './motion-comic-viewer'
 
 type Props = {
   comicId: number
   episode: number
-  lang: 'ja' | 'en'
-  changeLang: (lang: 'ja' | 'en') => void
+  lang: Lang
+  inFullScreen: boolean
+  setInFullScreen: (inFullScreen: boolean) => void
+
+  setLang: (lang: Lang) => void
 }
 
 export const MotionComicViewer = ({
   comicId,
   episode,
   lang,
-  changeLang
+  inFullScreen,
+  setInFullScreen,
+  setLang,
 }: Props) => {
   const videos = [
     [
@@ -28,7 +33,9 @@ export const MotionComicViewer = ({
     <MotionComicViewerComponent
       videos={videos[episode - 1]}
       lang={lang}
-      changeLang={changeLang}
+      inFullScreen={inFullScreen}
+      setInFullScreen={setInFullScreen}
+      setLang={setLang}
     />
   )
 }

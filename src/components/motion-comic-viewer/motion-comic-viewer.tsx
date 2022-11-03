@@ -1,15 +1,28 @@
-import { View, Spinner, HStack, Box } from 'native-base'
+import * as ScreenOrientation from 'expo-screen-orientation'
+import { Box, Select } from 'native-base'
+import { Dimensions } from 'react-native'
 import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av'
 import { useRef, useState } from 'react'
 import { useEffect } from 'react'
+import VideoPlayer from 'expo-video-player'
+import { setStatusBarHidden } from 'expo-status-bar'
+import { Lang } from '../../types'
 
 type Props = {
   videos: string[]
-  lang: 'ja' | 'en'
-  changeLang: (lang: 'ja' | 'en') => void
+  lang: Lang
+  inFullScreen: boolean
+  setInFullScreen: (inFullScreen: boolean) => void
+  setLang: (lang: Lang) => void
 }
 
-export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
+export const MotionComicViewerComponent = ({
+  videos,
+  lang,
+  inFullScreen,
+  setLang,
+  setInFullScreen
+}: Props) => {
   const videoJa = useRef<Video>(null)
   const videoEn = useRef<Video>(null)
   const video2 = useRef<Video>(null)
@@ -20,68 +33,169 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
   useEffect(() => {
     if (statusJa?.isLoaded && statusEn?.isLoaded) {
       if (!statusJa.isPlaying && !statusEn.isPlaying) {
+        console.log('loaded!')
         videoJa.current?.playAsync()
         videoEn.current?.playAsync()
       }
     }
+
+    return () => {
+      videoJa.current?.stopAsync()
+      videoEn.current?.stopAsync()
+    }
   }, [statusJa, statusEn])
 
   return (
-    <View mt={8} maxWidth={'100%'}>
-      {!statusJa?.isLoaded && !statusEn?.isLoaded && videos.length > 1 ? (
-        <HStack space={8} justifyContent="center" alignItems="center">
-          <Spinner size="lg" />
-        </HStack>
-      ) : undefined}
-
+    <>
       {videos.length > 1 ? (
-        <Box>
-          <Video
-            ref={videoJa}
-            style={{
-              width: 320,
-              height: 200,
-              display: lang === 'ja' ? 'flex' : 'none'
-            }}
-            resizeMode={ResizeMode.COVER}
-            isMuted={lang !== 'ja'}
-            source={{
-              uri: videos[0]
-            }}
-            onLoad={status => setStatusJa(() => status)}
-          />
-          <Video
-            ref={videoEn}
-            style={{
-              width: 320,
-              height: 200,
-              display: lang === 'en' ? 'flex' : 'none'
-            }}
-            resizeMode={ResizeMode.COVER}
-            isMuted={lang !== 'en'}
-            source={{
-              uri: videos[1]
-            }}
-            onLoad={status => setStatusEn(() => status)}
-          />
-        </Box>
+        <>
+          <Box display={lang === 'ja' ? 'block' : 'none'}>
+            <VideoPlayer
+              playbackCallback={status => setStatusJa(status)}
+              videoProps={{
+                shouldPlay: false,
+                resizeMode: ResizeMode.COVER,
+                source: {
+                  uri: videos[0]
+                },
+                ref: videoJa as any,
+                isMuted: lang !== 'ja'
+              }}
+              fullscreen={{
+                inFullscreen: inFullScreen,
+                enterFullscreen: async () => {
+                  setStatusBarHidden(true, 'fade')
+                  setInFullScreen(!inFullScreen)
+                  await ScreenOrientation.lockAsync(
+                    ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+                  )
+                  console.log('entered full screen')
+                },
+                exitFullscreen: async () => {
+                  setStatusBarHidden(false, 'fade')
+                  setInFullScreen(!inFullScreen)
+                  await ScreenOrientation.lockAsync(
+                    ScreenOrientation.OrientationLock.PORTRAIT_UP
+                  )
+                  console.log('exited full screen')
+                }
+              }}
+              style={{
+                videoBackgroundColor: 'black',
+                height: inFullScreen
+                  ? Dimensions.get('window').width - 50
+                  : 200,
+                width: inFullScreen ? Dimensions.get('window').height - 40 : 320
+              }}
+              mute={{ isMute: lang !== 'ja' }}
+              header={
+                <Select
+                  selectedValue={lang}
+                  minWidth="200"
+                  accessibilityLabel="Choose Language"
+                  placeholder="Choose Language"
+                  mt={1}
+                  onValueChange={newLang => setLang(newLang as Lang)}
+                >
+                  <Select.Item label="日本語" value="ja" />
+                  <Select.Item label="English" value="en" />
+                </Select>
+              }
+            />
+          </Box>
+          <Box display={lang === 'en' ? 'block' : 'none'}>
+            <VideoPlayer
+              playbackCallback={status => setStatusEn(status)}
+              videoProps={{
+                shouldPlay: false,
+                resizeMode: ResizeMode.COVER,
+                source: {
+                  uri: videos[1]
+                },
+                ref: videoEn as any,
+                isMuted: lang !== 'en'
+              }}
+              fullscreen={{
+                inFullscreen: inFullScreen,
+                enterFullscreen: async () => {
+                  setStatusBarHidden(true, 'fade')
+                  setInFullScreen(!inFullScreen)
+                  await ScreenOrientation.lockAsync(
+                    ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+                  )
+                  console.log('entered full screen')
+                },
+                exitFullscreen: async () => {
+                  setStatusBarHidden(false, 'fade')
+                  setInFullScreen(!inFullScreen)
+                  await ScreenOrientation.lockAsync(
+                    ScreenOrientation.OrientationLock.PORTRAIT_UP
+                  )
+                  console.log('exited full screen')
+                }
+              }}
+              style={{
+                videoBackgroundColor: 'black',
+                height: inFullScreen
+                  ? Dimensions.get('window').width - 50
+                  : 200,
+                width: inFullScreen ? Dimensions.get('window').height - 40 : 320
+              }}
+              mute={{ isMute: lang !== 'en' }}
+              header={
+                <Select
+                  selectedValue={lang}
+                  minWidth="200"
+                  accessibilityLabel="Choose Language"
+                  placeholder="Choose Language"
+                  mt={1}
+                  onValueChange={newLang => setLang(newLang as Lang)}
+                >
+                  <Select.Item label="日本語" value="ja" />
+                  <Select.Item label="English" value="en" />
+                </Select>
+              }
+            />
+          </Box>
+        </>
       ) : (
-        <Box>
-          <Video
-            ref={video2}
+        <Box display={'block'}>
+          <VideoPlayer
+            videoProps={{
+              shouldPlay: false,
+              resizeMode: ResizeMode.COVER,
+              source: {
+                uri: videos[0]
+              },
+              ref: video2 as any
+            }}
+            fullscreen={{
+              inFullscreen: inFullScreen,
+              enterFullscreen: async () => {
+                setStatusBarHidden(true, 'fade')
+                setInFullScreen(!inFullScreen)
+                await ScreenOrientation.lockAsync(
+                  ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+                )
+                console.log('entered full screen')
+              },
+              exitFullscreen: async () => {
+                setStatusBarHidden(false, 'fade')
+                setInFullScreen(!inFullScreen)
+                await ScreenOrientation.lockAsync(
+                  ScreenOrientation.OrientationLock.PORTRAIT_UP
+                )
+                console.log('exited full screen')
+              }
+            }}
             style={{
-              width: 320,
-              height: 200,
-              display: 'flex'
+              videoBackgroundColor: 'black',
+              height: inFullScreen ? Dimensions.get('window').width - 50 : 200,
+              width: inFullScreen ? Dimensions.get('window').height - 40 : 320
             }}
-            resizeMode={ResizeMode.COVER}
-            source={{
-              uri: videos[0]
-            }}
-            shouldPlay={true}
           />
         </Box>
       )}
-    </View>
+    </>
   )
 }

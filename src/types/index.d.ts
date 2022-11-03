@@ -9,3 +9,5 @@ export type RootStackParamList = {
   MotionComicList: MotionComic
   MotionComicDetail: { comic: MotionComic; episode: number }
 }
+
+export type Lang = 'ja' | 'en'
