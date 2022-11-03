@@ -33,15 +33,9 @@ export const MotionComicViewerComponent = ({
   useEffect(() => {
     if (statusJa?.isLoaded && statusEn?.isLoaded) {
       if (!statusJa.isPlaying && !statusEn.isPlaying) {
-        console.log('loaded!')
         videoJa.current?.playAsync()
         videoEn.current?.playAsync()
       }
-    }
-
-    return () => {
-      videoJa.current?.stopAsync()
-      videoEn.current?.stopAsync()
     }
   }, [statusJa, statusEn])
 
@@ -83,18 +77,16 @@ export const MotionComicViewerComponent = ({
               style={{
                 videoBackgroundColor: 'black',
                 height: inFullScreen
-                  ? Dimensions.get('window').width - 50
+                  ? Dimensions.get('window').height - 50
                   : 200,
-                width: inFullScreen ? Dimensions.get('window').height - 40 : 320
+                width: inFullScreen ? Dimensions.get('window').width - 40 : 320
               }}
-              mute={{ isMute: lang !== 'ja' }}
               header={
                 <Select
                   selectedValue={lang}
-                  minWidth="200"
+                  minWidth="100"
                   accessibilityLabel="Choose Language"
                   placeholder="Choose Language"
-                  mt={1}
                   onValueChange={newLang => setLang(newLang as Lang)}
                 >
                   <Select.Item label="日本語" value="ja" />
@@ -137,18 +129,16 @@ export const MotionComicViewerComponent = ({
               style={{
                 videoBackgroundColor: 'black',
                 height: inFullScreen
-                  ? Dimensions.get('window').width - 50
+                  ? Dimensions.get('window').height - 50
                   : 200,
-                width: inFullScreen ? Dimensions.get('window').height - 40 : 320
+                width: inFullScreen ? Dimensions.get('window').width - 40 : 320
               }}
-              mute={{ isMute: lang !== 'en' }}
               header={
                 <Select
                   selectedValue={lang}
-                  minWidth="200"
+                  minWidth="100"
                   accessibilityLabel="Choose Language"
                   placeholder="Choose Language"
-                  mt={1}
                   onValueChange={newLang => setLang(newLang as Lang)}
                 >
                   <Select.Item label="日本語" value="ja" />

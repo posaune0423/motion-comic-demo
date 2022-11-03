@@ -1,7 +1,7 @@
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { RouteProp, useRoute } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
-import { View } from 'native-base'
+import { View, Text } from 'native-base'
 import { useEffect, useState } from 'react'
 import { MotionComicViewer } from '../components/motion-comic-viewer'
 import { Lang, RootStackParamList } from '../types'
@@ -20,11 +20,11 @@ export default function MotionComicDetailScreen() {
 
   return (
     <View flex={1} backgroundColor="#fff" alignItems="center">
-      {/* {inFullScreenJa || inFullScreenEn ||(
+      {inFullScreen || (
         <Text my={4} fontSize={'lg'}>
           {comic.name} 第{episode}話
         </Text>
-      )} */}
+      )}
 
       <MotionComicViewer
         comicId={comic.id}
