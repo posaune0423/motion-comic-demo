@@ -26,26 +26,31 @@ export default function MotionComicListScreen() {
         size="xl"
         w={'80%'}
       />
-
-      <Box my={8} width={'80%'}>
-        <FlatList
-          data={episodes}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() =>
-                navigation.navigate('MotionComicDetail', {
-                  comic,
-                  episode: item
-                })
-              }
-            >
-              <List>
-                <Text pl={4}>Episode {item}</Text>
-              </List>
-            </Pressable>
-          )}
-        />
-      </Box>
+      {comic.id === 1 ? (
+        <Box my={8} width={'80%'}>
+          <FlatList
+            data={episodes}
+            renderItem={({ item }) => (
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('MotionComicDetail', {
+                    comic,
+                    episode: item
+                  })
+                }
+              >
+                <List>
+                  <Text pl={4}>Episode {item}</Text>
+                </List>
+              </Pressable>
+            )}
+          />
+        </Box>
+      ) : (
+        <Box my={8} width={'80%'}>
+          <Text mx={'auto'}>Coming soon...</Text>
+        </Box>
+      )}
 
       <StatusBar style="auto" />
     </View>
