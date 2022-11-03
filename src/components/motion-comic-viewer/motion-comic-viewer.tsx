@@ -28,7 +28,7 @@ export const MotionComicViewerComponent = ({ videos, lang }: Props) => {
 
   return (
     <View mt={8} maxWidth={'100%'}>
-      {!statusJa?.isLoaded && !statusEn?.isLoaded ? (
+      {!statusJa?.isLoaded && !statusEn?.isLoaded && videos.length > 1 ? (
         <HStack space={8} justifyContent="center" alignItems="center">
           <Spinner size="lg" />
         </HStack>
